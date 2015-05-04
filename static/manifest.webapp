@@ -1,0 +1,14 @@
+{
+  "name": "ConnectFour",
+  "version": "0.1",
+  "description": "Connect four",
+  "launch_path": "/index.html",
+  "icons": {
+    "60": "/styles/icon-60.png"
+  },
+  "developer": {
+    "name": "Nikola Henezi",
+    "url": "http://nikola.henezi.com"
+  },
+  "default_locale": "en"
+}
