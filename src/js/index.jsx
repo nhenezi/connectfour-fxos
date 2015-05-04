@@ -15,6 +15,8 @@ const Route = Router.Route;
 
 const routes = (
   <Route name="app" path="/" handler={components.App}>
+    <Route name="login" path="/login" handler={components.Login} />
+    <Router.DefaultRoute name="landing" handler={components.Landing}/>
   </Route>
 );
 

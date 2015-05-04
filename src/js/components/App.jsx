@@ -1,14 +1,18 @@
 'use strict';
 
 import React from 'react';
+import Router from 'react-router';
+
+import Header from './Header.jsx';
 
 
 class App extends React.Component {
   render() {
-    console.info('Rendering App');
+    console.debug('Rendering App');
     return (
       <div>
-        <h1>Hello world</h1>
+        <Header />
+        <Router.RouteHandler />
       </div>
     );
   }

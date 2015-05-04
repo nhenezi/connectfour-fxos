@@ -36,20 +36,28 @@ gulp.task('css', function () {
     .pipe(gulp.dest('./build/css/'));
 });
 
-
-/*
-gulp.task('bootstrap', function() {
-  gulp.src('./bower_components/bootstrap/dist/css/bootstrap.min.css')
+gulp.task('foundation', function() {
+  gulp.src('./bower_components/foundation/css/normalize.css')
     .pipe(gulp.dest('./build/css/'));
-  gulp.src('./bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff')
-    .pipe(gulp.dest('./build/fonts'));
-  gulp.src('./bower_components/bootstrap/fonts/glyphicons-halflings-regular.woff2')
-    .pipe(gulp.dest('./build/fonts'));
-  gulp.src('./bower_components/bootstrap/fonts/glyphicons-halflings-regular.ttf')
-    .pipe(gulp.dest('./build/fonts'));
+  gulp.src('./bower_components/foundation/css/foundation.css')
+    .pipe(gulp.dest('./build/css/'));
 
+  gulp.src('./bower_components/foundation/js/foundation.min.js')
+    .pipe(gulp.dest('./build/js'));
+  gulp.src('./bower_components/foundation/js/vendor/modernizr.js')
+    .pipe(gulp.dest('./build/js'));
+  gulp.src('./bower_components/foundation/js/vendor/jquery.js')
+    .pipe(gulp.dest('./build/js'));
+  gulp.src('./bower_components/foundation/js/vendor/fastclick.js')
+    .pipe(gulp.dest('./build/js'));
 });
-*/
+
+gulp.task('gaia-bb', function() {
+  gulp.src('./bower_components/building-blocks/style/buttons.css')
+    .pipe(gulp.dest('./build/css/'));
+  gulp.src('./bower_components/building-blocks/style/input_areas.css')
+    .pipe(gulp.dest('./build/css/'));
+});
 
 gulp.task('html', function() {
   gulp.src('./static/html/*.html')
@@ -59,6 +67,7 @@ gulp.task('html', function() {
 gulp.task('manifest', function() {
   gulp.src('./static/manifest.webapp')
     .pipe(gulp.dest('./build/'));
-})
+});
 
-gulp.task('default', ['browserify', 'css', 'html', 'manifest']);
+gulp.task('default', ['browserify', 'css', 'html', 'manifest', 'gaia-bb',
+          'foundation']);
