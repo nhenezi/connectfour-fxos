@@ -3,6 +3,10 @@
 import Reflux from 'reflux';
 
 const async_actions = [
+  'register',
+  'login',
+  'logout',
+  'auth'
 ];
 
 const actions = [
