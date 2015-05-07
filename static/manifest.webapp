@@ -10,5 +10,11 @@
     "name": "Nikola Henezi",
     "url": "http://nikola.henezi.com"
   },
-  "default_locale": "en"
+  "default_locale": "en",
+  "type": "privileged",
+  "permissions": {
+    "systemXHR": {
+      "description": "Allows loading remote content"
+    }
+  }
 }

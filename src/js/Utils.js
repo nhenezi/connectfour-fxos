@@ -4,13 +4,21 @@ import Reflux from 'reflux';
 import Cookies from 'cookies-js';
 import actions from './actions.js';
 
-const base_url = 'http://cc.com/api/';
+const base_url = 'http://c4/.lc/';
 
 let Http = Reflux.createStore({
   init: function() {
     actions.login.completed.listen(this.onLogin);
     actions.register.completed.listen(this.onLogin);
     actions.auth.completed.listen(this.onAuth);
+
+    $.ajaxSetup( {
+      xhr: function() {
+        return new window.XMLHttpRequest( {
+          mozSystem: true
+        });
+      }
+    });
   },
 
   access_token: false,
