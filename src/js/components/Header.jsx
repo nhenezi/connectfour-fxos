@@ -12,13 +12,17 @@ class Header extends React.Component {
     };
 
     this.onAuth = this.onAuth.bind(this);
+    this.onLogout = this.onLogout.bind(this);
   }
 
   componentDidMount() {
     console.debug('Header:componentDidMount');
 
     this.unsubscribers = [
-      actions.auth.completed.listen(this.onAuth)
+      actions.auth.completed.listen(this.onAuth),
+      actions.logout.completed.listen(this.onLogout),
+      actions.register.completed.listen(this.onAuth),
+      actions.login.completed.listen(this.onAuth)
     ];
   }
 
@@ -29,6 +33,13 @@ class Header extends React.Component {
         loggedIn: true
       });
     }
+  }
+
+  onLogout(resp) {
+    console.debug('Header:onLogout', resp);
+    this.setState({
+      loggedIn: false
+    });
   }
 
   componentWillUnmount() {

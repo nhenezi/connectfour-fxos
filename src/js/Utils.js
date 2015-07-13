@@ -65,7 +65,7 @@ let Http = Reflux.createStore({
       if (this.access_token) {
         data.access_token = this.access_token;
       }
-
+      console.debug('POST ', url, data);
       $.ajax({
         headers: {
           'Accept': 'application/json',

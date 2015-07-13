@@ -18,6 +18,7 @@ const routes = (
     <Route name="login" path="/login" handler={components.Login} />
     <Route name="register" path="/register" handler={components.Register} />
     <Route name="dashboard" path="/dashboard" handler={components.Dashboard} />
+    <Route name="logout" path="/logout" handler={components.Logout} />
     <Router.DefaultRoute name="landing" handler={components.Landing}/>
   </Route>
 );
