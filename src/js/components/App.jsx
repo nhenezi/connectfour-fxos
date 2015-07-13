@@ -9,6 +9,7 @@ import Header from './Header.jsx';
 
 class App extends React.Component {
   constructor(props) {
+    console.debug('App:constructor');
     super(props);
 
     this.state = {

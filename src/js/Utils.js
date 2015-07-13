@@ -4,7 +4,7 @@ import Reflux from 'reflux';
 import Cookies from 'cookies-js';
 import actions from './actions.js';
 
-const base_url = 'http://c4/.lc/';
+const base_url = 'http://c4.lc/api/';
 
 let Http = Reflux.createStore({
   init: function() {
@@ -36,11 +36,12 @@ let Http = Reflux.createStore({
   },
 
   onAuth: function(resp) {
-    console.debug('Auth completed', resp);
+    console.debug('Utils:Auth completed', resp);
     this.authCompleted = true;
     if (resp.success === true) {
       this.access_token = Cookies.get('access_token');
     } else {
+      console.debug('Utils:auth failed, redirecting to login');
       window.location.hash = '#/Login';
     }
 
@@ -48,13 +49,14 @@ let Http = Reflux.createStore({
   },
 
   onLogin: function(resp) {
-    console.debug('Utils resp', resp, resp.s);
+    console.debug('Utils:onLogin', resp, resp.s);
     this.authCompleted = true;
     if (resp.success === true) {
       console.debug('Util: Login successful - setting cookie', Cookies);
       Cookies.set('access_token', resp.user.access_token);
       this.access_token = resp.user.access_token;
       this.processRequestQueue();
+      console.log('CCC', Cookies.get('access_token'));
     }
   },
 
@@ -120,6 +122,7 @@ let Http = Reflux.createStore({
         url += contractor + 'access_token=' + this.access_token;
       }
 
+      console.debug('GET ' + base_url + url);
       $.ajax({
         headers: {
           'Accept': 'application/json',

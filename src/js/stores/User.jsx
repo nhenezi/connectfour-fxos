@@ -35,11 +35,13 @@ var UserStore = Reflux.createStore({
     this.access_token = resp.user.access_token;
     this.data = resp.user;
     this.logged_in = true;
+    console.debug('UserStore:onLogin done');
   },
 
   onAuth: function(resp) {
     console.debug('UserStore:onAuth', resp);
     if ('error' in resp) {
+      console.debug('RR');
       window.location.hash = '#/Login';
     } else {
       this.access_token = Cookies.get('access_token');
@@ -64,7 +66,7 @@ var UserStore = Reflux.createStore({
 
   register: function(name, email, password) {
     const data = {name, email, password};
-    console.debog('UserStore:register', data);
+    console.debug('UserStore:register', data);
     Http.post('user', data, actions.register.completed,
               actions.register.failed);
   },
@@ -72,6 +74,12 @@ var UserStore = Reflux.createStore({
   authenticate: function() {
     const access_token = Cookies.get('access_token');
     console.debug('UserStore:authenticate', access_token);
+    if (access_token === undefined) {
+      actions.auth.completed({
+        error: 'No access token'
+      });
+      return;
+    }
     Http.get('auth/' + access_token,
              actions.auth.completed,
              actions.auth.failed);
