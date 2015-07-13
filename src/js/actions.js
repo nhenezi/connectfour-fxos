@@ -6,7 +6,14 @@ const async_actions = [
   'register',
   'login',
   'logout',
-  'auth'
+  'auth',
+  'find partner',
+  'makeMove',
+
+  // websocket actions
+  'receiveMove',
+  'game over',
+  'match found'
 ];
 
 const actions = [

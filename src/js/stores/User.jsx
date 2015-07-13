@@ -1,5 +1,6 @@
 'use strict';
 
+import io from 'socket.io-client';
 import Reflux from 'reflux';
 import Cookies from 'cookies-js';
 import Utils from '../Utils.js';
@@ -23,7 +24,16 @@ var UserStore = Reflux.createStore({
     this.access_token = false;
     this.logged_in = false;
     this.data = {};
+    this.socket = null;
+  },
 
+  initializeSocket() {
+    console.debug('UserStore:initializeSocket');
+    if (!this.socket) {
+      this.socket = io.connect('http://c4.lc/socket.io');
+    } else {
+      console.debug('UserStore:initializeSocket Failed: Socket already initialized');
+    }
   },
 
   onLogin: function(resp) {
@@ -35,6 +45,7 @@ var UserStore = Reflux.createStore({
     this.access_token = resp.user.access_token;
     this.data = resp.user;
     this.logged_in = true;
+    this.initializeSocket();
     console.debug('UserStore:onLogin done');
   },
 
@@ -47,6 +58,7 @@ var UserStore = Reflux.createStore({
       this.access_token = Cookies.get('access_token');
       this.logged_in = true;
       this.data = resp.user;
+      this.initializeSocket();
     }
   },
 
