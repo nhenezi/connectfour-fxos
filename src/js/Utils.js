@@ -1,12 +1,20 @@
 'use strict';
 
+/**
+ * Contains utility functions that are used trough whole applications
+ */
+
 import Reflux from 'reflux';
 import Cookies from 'cookies-js';
 import actions from './actions.js';
 
+// Changed this to your url
 const base_url = 'http://c4.lc/api/';
 
 let Http = Reflux.createStore({
+  /**
+   * Small abstraction over $.ajax
+   */
   init: function() {
     actions.login.completed.listen(this.onLogin);
     actions.register.completed.listen(this.onLogin);
@@ -177,12 +185,5 @@ let Http = Reflux.createStore({
   }
 });
 
-let deepValue = function(obj, path){
-  for (let i = 0, path = path.split('.'), len = path.length; i < len; i++){
-    obj = obj[path[i]];
-  }
-  return obj;
-};
-
-const Utils = {Http, deepValue};
+const Utils = {Http};
 export default Utils;
