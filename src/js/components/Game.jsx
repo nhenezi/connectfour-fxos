@@ -3,6 +3,7 @@
 import React from 'react';
 import Konva from 'konva';
 import ReactKonva from 'react-konva';
+import GameStore from '../stores/Game.jsx';
 import UserStore from '../stores/User.jsx';
 
 import actions from '../actions.js';
@@ -14,14 +15,15 @@ class Game extends React.Component {
 
     this.state = {
       board: [
-        [1, 2, 0, 0, 0, 0],
-        [1, 2, 0, 0, 0, 0],
-        [2, 1, 0, 0, 0, 0],
-        [1, 0, 0, 0, 1, 0],
-        [2, 1, 2, 0, 0, 0],
-        [2, 1, 1, 0, 0, 2],
-        [1, 2, 1, 1, 1, 2]
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]
       ],
+      disabled: GameStore.data.next_move !== UserStore.data.id,
       rect_colors: [
         'white', 'white', 'white', 'white', 'white', 'white', 'white'
       ]
@@ -34,13 +36,31 @@ class Game extends React.Component {
     this.onColumnClick = this.onColumnClick.bind(this);
     this.onColumnEnter = this.onColumnEnter.bind(this);
     this.onColumnLeave = this.onColumnLeave.bind(this);
+    this.onCompletedMove = this.onCompletedMove.bind(this);
   }
 
   componentDidMount() {
     console.debug('Game:componentDidMount');
+    this.unsubscribers = [
+      actions.makeMove.completed.listen(this.onCompletedMove)
+    ];
+
+  }
+
+  onCompletedMove(data) {
+    console.debug('Game:onCompletedMove', data);
+    this.setState({
+      board: data.board
+    });
+  }
+
+  componentWillUnmount() {
+    console.debug('Game:componentWillUnmount');
+    this.unsubscribers.map(u => u());
   }
 
   getCircles() {
+    console.debug('Game:getCircles');
     const colors = {
       1: 'red',
       2: 'blue'
@@ -66,11 +86,21 @@ class Game extends React.Component {
 
   onColumnClick(e, a) {
     console.log('Game:onColumnClick', e, a);
-    e.target.setFill('blue');
+    if (this.state.disabled) {
+      return;
+    }
+
+    this.setState({
+      disabled: true
+    });
+    actions.makeMove(e.target.attrs.id);
   }
 
   onColumnEnter(e) {
     console.log('Game:onColumnEnter', e);
+    if (this.state.disabled) {
+      return;
+    }
 
     let rect_colors = this.state.rect_colors;
     rect_colors[e.target.attrs.id] = '#DDDDDD';
@@ -81,6 +111,9 @@ class Game extends React.Component {
 
   onColumnLeave(e) {
     console.log('Game:onColumnLeave', e);
+    if (this.state.disabled) {
+      return;
+    }
 
     let rect_colors = this.state.rect_colors;
     rect_colors[e.target.attrs.id] = 'white';

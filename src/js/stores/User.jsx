@@ -9,7 +9,7 @@ import actions from '../actions.js';
 const Http = Utils.Http;
 
 
-var UserStore = Reflux.createStore({
+let UserStore = Reflux.createStore({
   init: function() {
     this.listenTo(actions.login, 'login');
     this.listenTo(actions.register, 'register');
@@ -112,3 +112,5 @@ var UserStore = Reflux.createStore({
              actions.auth.failed);
   }
 });
+
+export default UserStore;

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import UserStore from '../stores/User.jsx';
+import GameStore from '../stores/Game.jsx';
 
 import actions from '../actions.js';
 
@@ -30,11 +31,12 @@ class Dashboard extends React.Component {
   }
 
   onMatchFound(data) {
-    console.log('Match found', data);
+    console.debug('Dashboard:onMatchFound', data);
+    window.location.hash = '#/Game';
   }
 
   componentDidMount() {
-    console.debug('Header:componentDidMount');
+    console.debug('Dashboard:componentDidMount');
 
     this.unsubscribers = [
       actions['match found'].completed.listen(this.onMatchFound)
