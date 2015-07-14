@@ -38,11 +38,13 @@ class Login extends React.Component {
     if (resp.success === false) {
       this.setState({
         valid: false,
-        errorMessage: resp.error
+        errorMessage: resp.error,
+        disabledSubmit: false
       });
     } else {
       this.setState({
-        valid: true
+        valid: true,
+        disabledSubmit: false
       });
       window.location.hash = '#/dashboard';
     }
@@ -67,11 +69,19 @@ class Login extends React.Component {
     let btn_class = this.state.disabledSubmit ? 'disabled' : '';
     btn_class += ' button';
 
+    let error_message = this.state.valid ? '' : (
+      <div className="alert alert-danger error">
+        {this.state.errorMessage}
+      </div>
+    );
+
+
     return (
       <div className="row">
         <div className="large-12 columns">
           <h3>Login</h3>
           <form onSubmit={this.handleSubmit}>
+            {error_message}
             <div className="row">
               <div className="large-12 columns">
                 <input type="email" ref="email"

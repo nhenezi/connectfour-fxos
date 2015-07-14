@@ -25,3 +25,9 @@ table .info {
 table .error {
   background-color: #F2DEDE !important;
 }
+
+form .error {
+  background-color: #FFAAAA;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+}
