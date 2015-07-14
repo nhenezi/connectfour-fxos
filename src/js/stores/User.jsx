@@ -75,7 +75,7 @@ var UserStore = Reflux.createStore({
     console.debug('UserStore:onAuth', resp);
     if ('error' in resp) {
       console.debug('RR');
-      window.location.hash = '#/Login';
+      window.location.hash = '#/';
     } else {
       this.access_token = Cookies.get('access_token');
       this.logged_in = true;
@@ -95,7 +95,7 @@ var UserStore = Reflux.createStore({
     console.debug('UserStore:logout');
     Cookies.expire('access_token');
     actions.logout.completed();
-    window.location.hash = '#/Login';
+    window.location.hash = '#/';
   },
 
   register: function(name, email, password) {
