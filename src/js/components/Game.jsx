@@ -121,7 +121,7 @@ class Game extends React.Component {
    * Helper to retrieve information about next move
    */
   getNextMoveText() {
-    let user_data;
+    let next_move, prev_move;
     if (GameStore.data.next_move === UserStore.data.id) {
       next_move = UserStore.data;
       prev_move = GameStore.data.partner;
@@ -212,7 +212,7 @@ class Game extends React.Component {
       <div className="row">
         {modal}
         <div className="row">
-          <div className="small-offset-5 small-3 columns">{next_move}</div>
+          <div className="text-center small-12 columns">{next_move}</div>
         </div>
         <div className="row" id="game">
           <ReactKonva.Stage height={this.board_height}
