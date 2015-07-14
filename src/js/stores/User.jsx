@@ -1,6 +1,5 @@
 'use strict';
 
-import io from 'socket.io-client';
 import Reflux from 'reflux';
 import Cookies from 'cookies-js';
 import Utils from '../Utils.js';
@@ -15,6 +14,7 @@ var UserStore = Reflux.createStore({
     this.listenTo(actions.login, 'login');
     this.listenTo(actions.register, 'register');
     this.listenTo(actions.logout, 'logout');
+    this.listenTo(actions['find partner'], 'findPartner');
 
     actions.login.completed.listen(this.onLogin);
     actions.register.completed.listen(this.onLogin);
@@ -30,10 +30,25 @@ var UserStore = Reflux.createStore({
   initializeSocket() {
     console.debug('UserStore:initializeSocket');
     if (!this.socket) {
-      this.socket = io.connect('http://c4.lc/socket.io');
+      this.socket = io();
+      this.socket.on('match found', (data) => {
+        data.game = JSON.parse(data.game);
+        data.partner = JSON.parse(data.partner);
+        actions['match found'].completed(data);
+      });
+      this.socket.on('receiveMove', actions.receiveMove.completed);
+      this.socket.on('game over', actions['game over'].completed);
+      console.debug('UserStore:initializeSocker Success: Subscribed to events');
     } else {
       console.debug('UserStore:initializeSocket Failed: Socket already initialized');
     }
+  },
+
+  findPartner() {
+    console.debug('UserStore:findPartner');
+    Http.post( 'match/' + this.access_token, {},
+              actions['find partner'].completed,
+              actions['find partner'].failed);
   },
 
   onLogin: function(resp) {
