@@ -52,6 +52,7 @@ gulp.task('foundation', function() {
     .pipe(gulp.dest('./build/js'));
 });
 
+// Copy gaia building blocks
 gulp.task('gaia-bb', function() {
   gulp.src('./bower_components/building-blocks/style/buttons.css')
     .pipe(gulp.dest('./build/css/'));

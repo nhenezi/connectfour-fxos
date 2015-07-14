@@ -60,7 +60,6 @@ class Dashboard extends React.Component {
     this.unsubscribers.map(u => u());
   }
 
-
   cancelSearch(e) {
     console.debug('Dashboard:cancelSearch');
     e.preventDefault();
@@ -82,9 +81,12 @@ class Dashboard extends React.Component {
 
     let statistics = [];
     if (this.state.stats.games) {
+      // generate HTML for statistics
       statistics.push(
         <h2>Dashboard</h2>
-      )
+      );
+
+      // general statistics
       statistics.push(
         <table id="stats_table">
           <tbody>
@@ -113,9 +115,11 @@ class Dashboard extends React.Component {
           </tbody>
         </table>
       );
+
       statistics.push(
         <h2>Latest Matches</h2>
       );
+      // detailed match statistics
       let matches_html = [];
       this.state.stats.games.map((game) => {
         let color = 'info';
@@ -154,7 +158,6 @@ class Dashboard extends React.Component {
 
       statistics.push(latest_matches_table);
     }
-    console.info("WWW", statistics, this.state.stats);
 
     return (
       <div className="row">

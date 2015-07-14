@@ -31,8 +31,6 @@ class Login extends React.Component {
     this.unsubscribers.map(u => u());
   }
 
-
-
   onLoginComplete(resp) {
     console.debug('Login:onLoginComplete');
     if (resp.success === false) {
