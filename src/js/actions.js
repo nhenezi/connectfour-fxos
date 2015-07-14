@@ -11,7 +11,7 @@ const async_actions = [
   'makeMove',
 
   // websocket actions
-  'receiveMove',
+  'move',
   'game over',
   'match found'
 ];

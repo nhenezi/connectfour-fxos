@@ -9,7 +9,7 @@ import actions from '../actions.js';
 const Http = Utils.Http;
 
 
-let UserStore = Reflux.createStore({
+var UserStore = Reflux.createStore({
   init: function() {
     this.listenTo(actions.login, 'login');
     this.listenTo(actions.register, 'register');
@@ -36,7 +36,10 @@ let UserStore = Reflux.createStore({
         data.partner = JSON.parse(data.partner);
         actions['match found'].completed(data);
       });
-      this.socket.on('receiveMove', actions.receiveMove.completed);
+      this.socket.on('move', (data) => {
+        console.debug('WS:MOVE', data);
+        actions.move.completed(data);
+      });
       this.socket.on('game over', actions['game over'].completed);
       console.debug('UserStore:initializeSocker Success: Subscribed to events');
     } else {

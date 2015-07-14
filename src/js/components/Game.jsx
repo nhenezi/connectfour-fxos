@@ -42,7 +42,8 @@ class Game extends React.Component {
   componentDidMount() {
     console.debug('Game:componentDidMount');
     this.unsubscribers = [
-      actions.makeMove.completed.listen(this.onCompletedMove)
+      actions.makeMove.completed.listen(this.onCompletedMove),
+      actions.move.completed.listen(this.onCompletedMove)
     ];
 
   }
@@ -50,7 +51,8 @@ class Game extends React.Component {
   onCompletedMove(data) {
     console.debug('Game:onCompletedMove', data);
     this.setState({
-      board: data.board
+      board: data.board,
+      disabled: data.next_move !== UserStore.data.id
     });
   }
 
@@ -61,9 +63,14 @@ class Game extends React.Component {
 
   getCircles() {
     console.debug('Game:getCircles');
-    const colors = {
-      1: 'red',
-      2: 'blue'
+
+    let getColor = (user_id) => {
+      console.debug('getCOLOR', user_id, GameStore.data.game.player_one);
+      if (GameStore.data.game.player_one === user_id) {
+        return 'red';
+      } else {
+        return 'blue';
+      }
     };
 
     let circles = [];
@@ -74,7 +81,7 @@ class Game extends React.Component {
             x={i * this.square + 25}
             y={250 - j * this.square + 25}
             radius={20}
-            fill={colors[this.state.board[i][j]]} stroke='black' strokeWidth={1}
+            fill={getColor(this.state.board[i][j])} stroke='black' strokeWidth={1}
             >
             </ReactKonva.Circle>);
         }
@@ -97,7 +104,6 @@ class Game extends React.Component {
   }
 
   onColumnEnter(e) {
-    console.log('Game:onColumnEnter', e);
     if (this.state.disabled) {
       return;
     }
@@ -110,7 +116,6 @@ class Game extends React.Component {
   }
 
   onColumnLeave(e) {
-    console.log('Game:onColumnLeave', e);
     if (this.state.disabled) {
       return;
     }
