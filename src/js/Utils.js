@@ -9,7 +9,7 @@ import Cookies from 'cookies-js';
 import actions from './actions.js';
 
 // Change this to your url
-const base_url = 'http://c4.lc/api/';
+const base_url = 'http://rp2.henezi.com/api/';
 
 let Http = Reflux.createStore({
   /**
