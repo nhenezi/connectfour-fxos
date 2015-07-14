@@ -19,6 +19,7 @@ const routes = (
     <Route name="register" path="/register" handler={components.Register} />
     <Route name="dashboard" path="/dashboard" handler={components.Dashboard} />
     <Route name="logout" path="/logout" handler={components.Logout} />
+    <Route name="game" path="/game" handler={components.Game} />
     <Router.DefaultRoute name="landing" handler={components.Landing}/>
   </Route>
 );

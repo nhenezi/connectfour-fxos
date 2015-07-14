@@ -1,3 +1,11 @@
 .top-bar {
   margin-bottom: 30px;
 }
+
+#game {
+  margin: 30px auto;
+}
+
+#game .konvajs-content {
+  margin: 0px auto;
+}

@@ -7,7 +7,8 @@ const components = {
   Header: require('./Header.jsx'),
   Register: require('./Register.jsx'),
   Dashboard: require('./Dashboard.jsx'),
-  Logout: require('./Logout.jsx')
+  Logout: require('./Logout.jsx'),
+  Game: require('./Game.jsx')
 };
 
 export default components;
