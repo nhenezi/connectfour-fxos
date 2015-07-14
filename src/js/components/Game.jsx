@@ -26,7 +26,8 @@ class Game extends React.Component {
       disabled: GameStore.data.next_move !== UserStore.data.id,
       rect_colors: [
         'white', 'white', 'white', 'white', 'white', 'white', 'white'
-      ]
+      ],
+      winner: undefined
     };
     this.square = 50;
     this.board_width = 400;
@@ -50,9 +51,19 @@ class Game extends React.Component {
 
   onCompletedMove(data) {
     console.debug('Game:onCompletedMove', data);
-    this.setState({
+    let updated_state = {
       board: data.board,
-      disabled: data.next_move !== UserStore.data.id
+      disabled: data.next_move !== UserStore.data.id || data.winning
+    };
+
+    if (data.winning) {
+      updated_state.winner = data.player_id;
+    }
+
+    this.setState(updated_state, () => {
+      if (data.winning) {
+        $('#game-over-modal').foundation('reveal', 'open');
+      }
     });
   }
 
@@ -152,12 +163,26 @@ class Game extends React.Component {
     </ReactKonva.Line>));
 
     let circles = this.getCircles();
+    let modal_text = '';
+    if (this.state.winner === UserStore.data.id) {
+      modal_text = 'You win!';
+    } else {
+      modal_text = 'You lose! :(';
+    }
+    let modal = (
+      <div id="game-over-modal" className="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <h2 id="modalTitle">Game over</h2>
+        <p>{modal_text}</p>
+        <a className="close-reveal-modal" aria-label="Close">&#215;</a>
+      </div>
+    );
 
     return (
       <div className="row">
+        {modal}
         <div className="row">
-          <div className="small-4 columns">Player 1</div>
-          <div className="small-4 columns">Player 2</div>
+          <div className="small-offset-3 small-3 columns">Player 1</div>
+          <div className="small-3 columns">Player 2</div>
         </div>
         <div className="row" id="game">
           <ReactKonva.Stage height={this.board_height}
