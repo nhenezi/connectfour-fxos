@@ -38,6 +38,7 @@ class Game extends React.Component {
     this.onColumnEnter = this.onColumnEnter.bind(this);
     this.onColumnLeave = this.onColumnLeave.bind(this);
     this.onCompletedMove = this.onCompletedMove.bind(this);
+    this.getNextMoveText = this.getNextMoveText.bind(this);
   }
 
   componentDidMount() {
@@ -72,11 +73,13 @@ class Game extends React.Component {
     this.unsubscribers.map(u => u());
   }
 
+  /**
+   * Generate svg circles from board state
+   */
   getCircles() {
     console.debug('Game:getCircles');
 
     let getColor = (user_id) => {
-      console.debug('getCOLOR', user_id, GameStore.data.game.player_one);
       if (GameStore.data.game.player_one === user_id) {
         return 'red';
       } else {
@@ -114,6 +117,27 @@ class Game extends React.Component {
     actions.makeMove(e.target.attrs.id);
   }
 
+  /**
+   * Helper to retrieve information about next move
+   */
+  getNextMoveText() {
+    let user_data;
+    if (GameStore.data.next_move === UserStore.data.id) {
+      next_move = UserStore.data;
+      prev_move = GameStore.data.partner;
+    } else {
+      next_move = GameStore.data.partner;
+      prev_move = UserStore.data;
+    }
+
+
+    if (this.state.winner) {
+      return 'Winner is ' + prev_move.name;
+    } else {
+      return 'Next move: ' + next_move.name;
+    }
+  }
+
   onColumnEnter(e) {
     if (this.state.disabled) {
       return;
@@ -141,6 +165,7 @@ class Game extends React.Component {
   render() {
     console.debug('Game:render');
 
+    // columns
     let vertical_rects = [0, 1, 2, 3, 4, 5, 6].map((i) => (<ReactKonva.Rect
       x={this.square * i} width={50}
       y={0} height={300}
@@ -151,18 +176,24 @@ class Game extends React.Component {
       fill={this.state.rect_colors[i]}
       stroke={'black'} strokeWidth={1}>
     </ReactKonva.Rect>));
+
+    // emphasizing edges of the first and last column rectangles
     let double_endlines = [0, 6].map((i) => (<ReactKonva.Line
       points={[this.square * i, 0, this.square * i, 300]}
       stroke='black' strokeWidth={1}
       >
     </ReactKonva.Line>));
 
+    // helper horizontal lines
     let horizontal_lines = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => (<ReactKonva.Line
       points={[0, this.square * i, 350, this.square * i]}
       stroke={'grey'} strokeWidth={1}>
     </ReactKonva.Line>));
 
     let circles = this.getCircles();
+    let next_move = this.getNextMoveText();
+
+    // text to be displayed at the end of a game
     let modal_text = '';
     if (this.state.winner === UserStore.data.id) {
       modal_text = 'You win!';
@@ -181,8 +212,7 @@ class Game extends React.Component {
       <div className="row">
         {modal}
         <div className="row">
-          <div className="small-offset-3 small-3 columns">Player 1</div>
-          <div className="small-3 columns">Player 2</div>
+          <div className="small-offset-5 small-3 columns">{next_move}</div>
         </div>
         <div className="row" id="game">
           <ReactKonva.Stage height={this.board_height}
