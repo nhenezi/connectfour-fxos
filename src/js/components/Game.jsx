@@ -20,7 +20,10 @@ class Game extends React.Component {
         [1, 0, 0, 0, 1, 0],
         [2, 1, 2, 0, 0, 0],
         [2, 1, 1, 0, 0, 2],
-        [1, 2, 1, 1, 1, 2],
+        [1, 2, 1, 1, 1, 2]
+      ],
+      rect_colors: [
+        'white', 'white', 'white', 'white', 'white', 'white', 'white'
       ]
     };
     this.square = 50;
@@ -28,6 +31,9 @@ class Game extends React.Component {
     this.board_height = 300;
 
     this.getCircles = this.getCircles.bind(this);
+    this.onColumnClick = this.onColumnClick.bind(this);
+    this.onColumnEnter = this.onColumnEnter.bind(this);
+    this.onColumnLeave = this.onColumnLeave.bind(this);
   }
 
   componentDidMount() {
@@ -58,17 +64,53 @@ class Game extends React.Component {
     return circles;
   }
 
+  onColumnClick(e, a) {
+    console.log('Game:onColumnClick', e, a);
+    e.target.setFill('blue');
+  }
+
+  onColumnEnter(e) {
+    console.log('Game:onColumnEnter', e);
+
+    let rect_colors = this.state.rect_colors;
+    rect_colors[e.target.attrs.id] = '#DDDDDD';
+    this.setState({
+      rect_colors: rect_colors
+    });
+  }
+
+  onColumnLeave(e) {
+    console.log('Game:onColumnLeave', e);
+
+    let rect_colors = this.state.rect_colors;
+    rect_colors[e.target.attrs.id] = 'white';
+    this.setState({
+      rect_colors: rect_colors
+    });
+  }
+
   render() {
     console.debug('Game:render');
 
-    let vertical_lines = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => (<ReactKonva.Line
-      points={[this.square * i, 0, this.square * i, 300]}
+    let vertical_rects = [0, 1, 2, 3, 4, 5, 6].map((i) => (<ReactKonva.Rect
+      x={this.square * i} width={50}
+      y={0} height={300}
+      id={i}
+      onClick={this.onColumnClick}
+      onMouseEnter={this.onColumnEnter}
+      onMouseLeave={this.onColumnLeave}
+      fill={this.state.rect_colors[i]}
       stroke={'black'} strokeWidth={1}>
+    </ReactKonva.Rect>));
+    let double_endlines = [0, 6].map((i) => (<ReactKonva.Line
+      points={[this.square * i, 0, this.square * i, 300]}
+      stroke='black' strokeWidth={1}
+      >
     </ReactKonva.Line>));
 
     let horizontal_lines = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => (<ReactKonva.Line
       points={[0, this.square * i, 350, this.square * i]}
-      stroke={'black'} strokeWidth={1}>
+      stroke={'grey'} strokeWidth={1}>
     </ReactKonva.Line>));
 
     let circles = this.getCircles();
@@ -83,7 +125,8 @@ class Game extends React.Component {
           <ReactKonva.Stage height={this.board_height}
             width={this.board_width}>
             <ReactKonva.Layer>
-              {vertical_lines}
+              {vertical_rects}
+              {double_endlines}
               {horizontal_lines}
               {circles}
             </ReactKonva.Layer>
