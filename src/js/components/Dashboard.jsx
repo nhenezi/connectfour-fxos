@@ -83,6 +83,37 @@ class Dashboard extends React.Component {
     let statistics = [];
     if (this.state.stats.games) {
       statistics.push(
+        <h2>Dashboard</h2>
+      )
+      statistics.push(
+        <table id="stats_table">
+          <tbody>
+            <tr>
+              <td><strong>Matches played</strong></td>
+              <td>{this.state.stats.total_games}</td>
+            </tr>
+            <tr>
+              <td><strong>Games Won</strong></td>
+              <td>{this.state.stats.won_games}</td>
+            </tr>
+            <tr>
+              <td><strong>Games Tied</strong></td>
+              <td>{this.state.stats.tied_games}</td>
+            </tr>
+            <tr>
+              <td><strong>Games Lost</strong></td>
+              <td>{this.state.stats.lost_games}</td>
+            </tr>
+            <tr>
+              <td><strong>Win percentage</strong></td>
+              <td>{Math.round(
+                ((this.state.stats.won_games / this.state.stats.total_games) * 100)
+              )/100}</td>
+            </tr>
+          </tbody>
+        </table>
+      );
+      statistics.push(
         <h2>Latest Matches</h2>
       );
       let matches_html = [];
