@@ -33,6 +33,7 @@ uses [socket.io](http://socket.io/) and [redis](http://redis.io/) for real-time 
 - install bower ang gulp globaly `npm install -g bower gulp`
 - install bower dependencies `bower install`
 - install npm dependencies `npm install`
+- change API `base_url` in `src/js/Utils.js`
 - build front-end code `gulp`
 
 You should now have compiled frontend code in `/build directory`

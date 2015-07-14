@@ -8,7 +8,7 @@ import Reflux from 'reflux';
 import Cookies from 'cookies-js';
 import actions from './actions.js';
 
-// Changed this to your url
+// Change this to your url
 const base_url = 'http://c4.lc/api/';
 
 let Http = Reflux.createStore({
