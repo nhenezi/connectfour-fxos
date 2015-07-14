@@ -27,7 +27,9 @@ class Game extends React.Component {
       rect_colors: [
         'white', 'white', 'white', 'white', 'white', 'white', 'white'
       ],
-      winner: undefined
+      winner: undefined,
+      done: false,
+      tie: undefined
     };
     this.square = 50;
     this.board_width = 400;
@@ -59,10 +61,14 @@ class Game extends React.Component {
 
     if (data.winning) {
       updated_state.winner = data.player_id;
+      updated_state.done = true;
+    } else if (data.tie) {
+      updated_state.tie = true;
+      updated_state.done = true;
     }
 
     this.setState(updated_state, () => {
-      if (data.winning) {
+      if (data.winning || data.tie) {
         $('#game-over-modal').foundation('reveal', 'open');
       }
     });
@@ -133,6 +139,9 @@ class Game extends React.Component {
 
     if (this.state.winner) {
       return 'Winner is ' + prev_move.name;
+
+    } else if (this.state.tie) {
+      return 'Tied!';
     } else {
       return 'Next move: ' + next_move.name;
     }
@@ -197,6 +206,8 @@ class Game extends React.Component {
     let modal_text = '';
     if (this.state.winner === UserStore.data.id) {
       modal_text = 'You win!';
+    } else if (this.state.tie) {
+      modal_text = 'Tie!';
     } else {
       modal_text = 'You lose! :(';
     }
@@ -209,7 +220,7 @@ class Game extends React.Component {
     );
 
     // display addition text when game is finished
-    let end_text = !this.state.winner ? '' : (
+    let end_text = !this.state.done ? '' : (
       <p><a className="button" href="#/Dashboard">Play another game</a></p>
     );
 
