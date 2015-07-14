@@ -6,6 +6,7 @@ const async_actions = [
   'register',
   'login',
   'logout',
+  'getStatistics',
   'auth',
   'find partner',
   'makeMove',

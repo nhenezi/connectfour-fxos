@@ -208,6 +208,11 @@ class Game extends React.Component {
       </div>
     );
 
+    // display addition text when game is finished
+    let end_text = !this.state.winner ? '' : (
+      <p><a className="button" href="#/Dashboard">Play another game</a></p>
+    );
+
     return (
       <div className="row">
         {modal}
@@ -224,6 +229,9 @@ class Game extends React.Component {
               {circles}
             </ReactKonva.Layer>
           </ReactKonva.Stage>
+        </div>
+        <div className="row text-center">
+          {end_text}
         </div>
       </div>
     );

@@ -15,6 +15,7 @@ var UserStore = Reflux.createStore({
     this.listenTo(actions.register, 'register');
     this.listenTo(actions.logout, 'logout');
     this.listenTo(actions['find partner'], 'findPartner');
+    this.listenTo(actions.getStatistics, 'getStatistics');
 
     actions.login.completed.listen(this.onLogin);
     actions.register.completed.listen(this.onLogin);
@@ -29,22 +30,18 @@ var UserStore = Reflux.createStore({
 
   initializeSocket() {
     console.debug('UserStore:initializeSocket');
-    if (!this.socket) {
-      this.socket = io();
-      this.socket.on('match found', (data) => {
-        data.game = JSON.parse(data.game);
-        data.partner = JSON.parse(data.partner);
-        actions['match found'].completed(data);
-      });
-      this.socket.on('move', (data) => {
-        console.debug('WS:MOVE', data);
-        actions.move.completed(data);
-      });
-      this.socket.on('game over', actions['game over'].completed);
-      console.debug('UserStore:initializeSocker Success: Subscribed to events');
-    } else {
-      console.debug('UserStore:initializeSocket Failed: Socket already initialized');
-    }
+    this.socket = io();
+    this.socket.on('match found', (data) => {
+      data.game = JSON.parse(data.game);
+      data.partner = JSON.parse(data.partner);
+      actions['match found'].completed(data);
+    });
+    this.socket.on('move', (data) => {
+      console.debug('WS:MOVE', data);
+      actions.move.completed(data);
+    });
+    this.socket.on('game over', actions['game over'].completed);
+    console.debug('UserStore:initializeSocker Success: Subscribed to events');
   },
 
   findPartner() {
@@ -52,6 +49,13 @@ var UserStore = Reflux.createStore({
     Http.post( 'match/' + this.access_token, {},
               actions['find partner'].completed,
               actions['find partner'].failed);
+  },
+
+  getStatistics() {
+    console.debug('UserStore:getStatistics');
+    Http.get('dashboard/' + this.access_token,
+             actions.getStatistics.completed,
+             actions.getStatistics.failed);
   },
 
   onLogin: function(resp) {

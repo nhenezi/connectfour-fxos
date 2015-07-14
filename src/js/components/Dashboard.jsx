@@ -12,12 +12,14 @@ class Dashboard extends React.Component {
     super(props);
 
     this.state = {
-      finding_partner: false
+      finding_partner: false,
+      stats: {}
     };
 
     this.playNewGame = this.playNewGame.bind(this);
     this.cancelSearch = this.cancelSearch.bind(this);
     this.onMatchFound = this.onMatchFound.bind(this);
+    this.onNewStatistics = this.onNewStatistics.bind(this);
   }
 
   playNewGame(e) {
@@ -39,8 +41,18 @@ class Dashboard extends React.Component {
     console.debug('Dashboard:componentDidMount');
 
     this.unsubscribers = [
-      actions['match found'].completed.listen(this.onMatchFound)
+      actions['match found'].completed.listen(this.onMatchFound),
+      actions.getStatistics.completed.listen(this.onNewStatistics)
     ];
+
+    actions.getStatistics();
+  }
+
+  onNewStatistics(data) {
+    console.debug('Dashboard:onNewStatistics', data);
+    this.setState({
+      stats: data
+    });
   }
 
   componentWillUnmount() {
@@ -67,9 +79,62 @@ class Dashboard extends React.Component {
     ) : (
         <button onClick={this.playNewGame}>Play new game</button>
     );
+
+    let statistics = [];
+    if (this.state.stats.games) {
+      statistics.push(
+        <h2>Latest Matches</h2>
+      );
+      let matches_html = [];
+      this.state.stats.games.map((game) => {
+        let color = 'info';
+        let result = 'Tied';
+        if (game.winner === UserStore.data.id) {
+          color = 'success';
+          result = 'Won';
+        } else if (game.winner !== 0) {
+          color = 'error';
+          result = 'Lost';
+        }
+        matches_html.push(
+          <tr className={color}>
+            <td>{game.partner.name}</td>
+            <td>{game.start_time}</td>
+            <td>{result}</td>
+            <td>{game.number_of_moves}</td>
+          </tr>
+        );
+      });
+
+      let latest_matches_table = (
+        <table id="matches-table">
+          <thead>
+            <th>VS</th>
+            <th>Date</th>
+            <th>Result</th>
+            <th>Number of moves</th>
+          </thead>
+          <tbody>
+            {matches_html}
+          </tbody>
+        </table>
+          );
+
+
+      statistics.push(latest_matches_table);
+    }
+    console.info("WWW", statistics, this.state.stats);
+
     return (
       <div className="row">
+        <div className="row text-center">
+          <div className="text-center small-12 columns">
+            {statistics}
+          </div>
+        </div>
+        <div className="row text-center">
         {text}
+        </div>
       </div>
     );
   }
