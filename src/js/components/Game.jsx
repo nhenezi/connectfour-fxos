@@ -117,7 +117,10 @@ class Game extends React.Component {
       return;
     }
 
+    let rect_colors = this.state.rect_colors;
+    rect_colors[e.target.attrs.id] = 'white';
     this.setState({
+      rect_colors: rect_colors,
       disabled: true
     });
     actions.makeMove(e.target.attrs.id);
