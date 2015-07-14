@@ -36,3 +36,12 @@ uses [socket.io](http://socket.io/) and [redis](http://redis.io/) for real-time 
 - build front-end code `gulp`
 
 You should now have compiled frontend code in `/build directory`
+
+## Arhitectural overview
+
+Code is written using ECMAScript 6 standard, [JSX](https://jsx.github.io/) and compiled with
+[Babel](https://babeljs.io/) for compatiblity with older browsers.
+It uses [Browserify](http://browserify.org/) modules and [Gulp](http://gulpjs.com/) for build automation.
+
+Code is organized into components (reusable parts of applications) and stores ("data" layer).
+`src/js/index.jsx` is where browserify starts bunlding up all modules and after gulp build front-end whole code can be found in `build/` directory.
