@@ -67,6 +67,7 @@ class Dashboard extends React.Component {
     this.setState({
       finding_partner: false
     });
+    actions.cancelSearch();
   }
 
   render() {

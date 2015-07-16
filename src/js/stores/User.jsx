@@ -16,6 +16,7 @@ var UserStore = Reflux.createStore({
     this.listenTo(actions.logout, 'logout');
     this.listenTo(actions['find partner'], 'findPartner');
     this.listenTo(actions.getStatistics, 'getStatistics');
+    this.listenTo(actions.cancelSearch, 'cancelSearch');
 
     actions.login.completed.listen(this.onLogin);
     actions.register.completed.listen(this.onLogin);
@@ -49,6 +50,13 @@ var UserStore = Reflux.createStore({
     Http.post( 'match/' + this.access_token, {},
               actions['find partner'].completed,
               actions['find partner'].failed);
+  },
+
+  cancelSearch() {
+    console.debug('UserStore:cancleSearch');
+    Http.post('match/' + this.access_token + '/cancel', {},
+              actions.cancelSearch.completed,
+              actions.cancelSearch.failed);
   },
 
   getStatistics() {

@@ -9,6 +9,7 @@ const async_actions = [
   'getStatistics',
   'auth',
   'find partner',
+  'cancelSearch',
   'makeMove',
 
   // websocket actions
