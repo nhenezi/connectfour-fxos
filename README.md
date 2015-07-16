@@ -40,7 +40,7 @@ You should now have compiled frontend code in `/build directory`
 
 ## Arhitectural overview
 
-Code is written using ECMAScript 6 standard, [JSX](https://jsx.github.io/) and compiled with
+Code is written using ECMAScript 6 standard, [JSX](https://facebook.github.io/jsx/) and compiled with
 [Babel](https://babeljs.io/) for compatiblity with older browsers.
 It uses [Browserify](http://browserify.org/) modules and [Gulp](http://gulpjs.com/) for build automation.
 
